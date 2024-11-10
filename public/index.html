@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <input type="text" id="message" placeholder="Enter message">
+  <button onclick="sendMessage()">Send</button>
+  <div id="messages"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('http://localhost:3000');
+
+    socket.on('message', (data) => {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML += `<p>${data.sender}:${data.message}</p>`;
+    });
+
+    function sendMessage() {
+      const message = document.getElementById('message').value;
+      socket.emit('message', message);
+      document.getElementById('message').value = '';
+    }
+  </script>
+</body>
+</html>
